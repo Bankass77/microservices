@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import microservices.practical.socialmultiplication.domain.MultiplicationResultAttempt;
 import microservices.practical.socialmultiplication.service.MultiplicationService;
 
@@ -38,6 +41,14 @@ public class MultiplicationResultAttemptController {
 	@GetMapping
 	ResponseEntity<List<MultiplicationResultAttempt>> getStatistics(@RequestParam("alias") String alias) {
 		return ResponseEntity.ok(multiplicationService.getStatsForUser(alias));
+	}
+
+	// Here we'll implement our POST later
+	@RequiredArgsConstructor
+	@NoArgsConstructor(force = true)
+	@Getter
+	private static final class ResultResponse {
+		private final boolean correct;
 	}
 
 }

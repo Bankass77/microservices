@@ -28,5 +28,13 @@ public interface MultiplicationService {
      * @return a list of {@link MultiplicationResultAttempt} objects, being the past attempts of the user.
      */
     List<MultiplicationResultAttempt> getStatsForUser(final String userAlias);
+    
+    /**
+     * Gets an attempt by its id
+     *
+     * @param resultId the identifier of the attempt
+     * @return the {@link MultiplicationResultAttempt} object matching the id, otherwise null.
+     */
+    MultiplicationResultAttempt getResultById(final Long resultId);
 
 }

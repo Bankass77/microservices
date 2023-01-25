@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -23,6 +24,8 @@ import lombok.ToString;
 @EqualsAndHashCode
 @Entity
 public class MultiplicationResultAttempt implements Serializable{
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -31,8 +34,8 @@ public class MultiplicationResultAttempt implements Serializable{
 	@JoinColumn(name = "USER_ID")
 	private final User user;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "MULTIPLICATION_ID")
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@JoinColumn(name = "MULTIPLICATION_ID", referencedColumnName = "MULTIPLICATION_ID")
 	private final Multiplication multiplication;
 	private final int resultAttempt;
 

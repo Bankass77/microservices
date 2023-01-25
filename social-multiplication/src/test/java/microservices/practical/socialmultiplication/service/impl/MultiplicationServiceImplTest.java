@@ -1,28 +1,28 @@
 package microservices.practical.socialmultiplication.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.aspectj.lang.annotation.Before;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.PropertySource;
 
 import microservices.practical.socialmultiplication.domain.Multiplication;
 import microservices.practical.socialmultiplication.domain.MultiplicationResultAttempt;
 import microservices.practical.socialmultiplication.domain.User;
+import microservices.practical.socialmultiplication.events.EventDispatcher;
 import microservices.practical.socialmultiplication.repository.MultiplicationAttemptRepository;
 import microservices.practical.socialmultiplication.repository.UserRepository;
 import microservices.practical.socialmultiplication.service.RandomGeneratorService;
 import static org.mockito.BDDMockito.given;
 @SpringBootTest
+@PropertySource("classpath:/src/main/resources/application-{profile}.properties")
 class MultiplicationServiceImplTest {
 
 	private MultiplicationServiceImpl multiplicationServiceImpl;
@@ -36,11 +36,14 @@ class MultiplicationServiceImplTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private EventDispatcher eventDispatcher;
+    
     @BeforeEach
     public void setUp() {
         // With this call to initMocks we tell Mockito to process the annotations
        
-        multiplicationServiceImpl = new MultiplicationServiceImpl(randomGeneratorService, attemptRepository, userRepository);
+        multiplicationServiceImpl = new MultiplicationServiceImpl(randomGeneratorService, attemptRepository, userRepository, eventDispatcher);
     }
 
     @Test
