@@ -24,6 +24,6 @@ public interface BadgeCardRepository extends CrudRepository<BadgeCard, Long> {
 	 * 
 	 * @Return the list of BadgeCards, stored by most recent.
 	 */
-	List<BadgeCard> findUserIdOrderByBagdgeTimestampDesc(final Long userId);
+	List<BadgeCard> findByUserIdOrderByBadgeTimestampDesc(final Long userId);
 
 }

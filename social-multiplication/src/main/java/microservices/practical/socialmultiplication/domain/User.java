@@ -5,6 +5,7 @@ import java.io.Serializable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,10 +20,12 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @Entity
-public final class User implements Serializable{
+public final class User implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "USER_ID")
 	private Long id;
 

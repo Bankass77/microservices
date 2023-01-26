@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-//@PropertySource("classpath:application-{profile}.properties")
 public class EventDispatcher {
 
 	private RabbitTemplate rabbitTemplate;

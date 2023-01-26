@@ -56,9 +56,12 @@ public class MultiplicationServiceImpl implements MultiplicationService {
 
 		MultiplicationResultAttempt checkedAttempt = new MultiplicationResultAttempt(user.orElse(attempt.getUser()), attempt.getMultiplication(),
 				attempt.getResultAttempt(), isCorrect);
+		System.out.println("checkedAttempt value is:"+ checkedAttempt);
 
 		// Stores the attempt
 		attemptRepository.save(checkedAttempt);
+		System.out.println("checkedAttempt value is:"+ checkedAttempt);
+
 		// communicate the result via Event
 
 		eventDispatcher.send(new MultiplicationSolvedEvent(checkedAttempt.getId(), checkedAttempt.getUser().getId(), checkedAttempt.isCorrect()));

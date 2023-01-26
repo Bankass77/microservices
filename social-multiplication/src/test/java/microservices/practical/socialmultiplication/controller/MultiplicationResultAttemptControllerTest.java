@@ -1,3 +1,4 @@
+
 package microservices.practical.socialmultiplication.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,6 +29,7 @@ import microservices.practical.socialmultiplication.domain.User;
 import microservices.practical.socialmultiplication.service.MultiplicationService;
 
 @WebMvcTest(controllers = MultiplicationResultAttemptController.class)
+
 @ActiveProfiles("dev")
 class MultiplicationResultAttemptControllerTest {
 
@@ -81,8 +83,7 @@ class MultiplicationResultAttemptControllerTest {
 	}
 
 	@Test
-	public void getUserStats() throws Exception {
-		// given
+	public void getUserStats() throws Exception { // given
 		User user = new User("Fatoumata");
 		Multiplication multiplication = new Multiplication(50, 70);
 		MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(user, multiplication, 3500, true);
@@ -98,12 +99,11 @@ class MultiplicationResultAttemptControllerTest {
 	}
 
 	@Test
-	public void getResultByIdTest() throws Exception {
-		// given
+	public void getResultByIdTest() throws Exception { // given
 		User user = new User("Fatoumata");
 		Multiplication multiplication = new Multiplication(50, 70);
 		MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(user, multiplication, 3500, true);
-		given(multiplicationService.getResultById(4L)).willReturn(attempt);
+		given(multiplicationService.getResultById(1L)).willReturn(attempt);
 
 		// when
 		MockHttpServletResponse response = mvc.perform(get("/results/1")).andReturn().getResponse();

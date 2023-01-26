@@ -29,12 +29,14 @@ public interface ScoreCardRepository extends CrudRepository<ScoreCard, Long> {
 	 *            retrieved
 	 * @Return the total score for the given user
 	 */
-	@Query("SELECT SUM(s.score) FROM microservices.practical.gamification.domain.ScoreCard s WHERE s.userID= :userId GROUP BY s.userId")
-	int getTotalScoreForUser(@Param("userId") final Long userId);
+	@Query("SELECT SUM(s.score) FROM microservices.practical.gamification.domain.ScoreCard s WHERE s.userId= :userId GROUP BY s.userId")
+	public int getTotalScoreForUser(@Param("userId") final Long userId);
 
-	@Query("SELECT NEW microservices.practical.gamification.domain.LeaderBoardRow(s.userId, SUM(s.score))"
-			+ "FROM microservices.practical.gamification.domain.ScoreCard s" + "GROUP BY s.userId ORDER BY SUM(s.score) DESC")
-	List<LeaderBoardRow> findFirst10();
+	
+	@Query("SELECT NEW microservices.practical.gamification.domain.LeaderBoardRow(s.userId, SUM(s.score)) " +
+            "FROM microservices.practical.gamification.domain.ScoreCard s " +
+            "GROUP BY s.userId ORDER BY SUM(s.score) DESC")
+public	List<LeaderBoardRow> findFirst10();
 
 	/**
 	 * Retrieves all the ScoreCards for a given user, identified bty this user
@@ -45,6 +47,6 @@ public interface ScoreCardRepository extends CrudRepository<ScoreCard, Long> {
 	 * @return a list containing all the ScoreCards for the given user, sorted
 	 *         by most recent
 	 */
-	List<ScoreCard> findByUserIdOrderByScoreTimestampDesc(final Long userId);
+public	List<ScoreCard> findByUserIdOrderByScoreTimestampDesc(final Long userId);
 
 }

@@ -1,7 +1,6 @@
 package microservices.practical.gamification.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,9 +8,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.annotation.OptBoolean;
-
 import lombok.extern.slf4j.Slf4j;
+import microservices.practical.gamification.client.MultiplicationResultAttempt;
+import microservices.practical.gamification.client.dto.MultiplicationResultAttemptClient;
 import microservices.practical.gamification.domain.Badge;
 import microservices.practical.gamification.domain.BadgeCard;
 import microservices.practical.gamification.domain.GameStats;
@@ -26,12 +25,16 @@ public class GameServiceImpl implements GameService {
 
 	private ScoreCardRepository scoreCardRepository;
 	private BadgeCardRepository badgeCardRepository;
+	private MultiplicationResultAttemptClient multiplicationResultAttemptClient;
+	
+	private static final int LUCKY_NUMBER=42;
 
 	@Autowired
-	public GameServiceImpl(ScoreCardRepository scoreCardRepository, BadgeCardRepository badgeCardRepository) {
+	public GameServiceImpl(ScoreCardRepository scoreCardRepository, BadgeCardRepository badgeCardRepository,MultiplicationResultAttemptClient multiplicationResultAttemptClient) {
 		super();
 		this.scoreCardRepository = scoreCardRepository;
 		this.badgeCardRepository = badgeCardRepository;
+		this.multiplicationResultAttemptClient=multiplicationResultAttemptClient;
 	}
 
 	@Override
@@ -67,7 +70,7 @@ public class GameServiceImpl implements GameService {
 		log.info("New Score for user {} is {}", userId, totalScore);
 
 		List<ScoreCard> scoreCards = scoreCardRepository.findByUserIdOrderByScoreTimestampDesc(userId);
-		List<BadgeCard> badgeCards2 = badgeCardRepository.findUserIdOrderByBagdgeTimestampDesc(userId);
+		List<BadgeCard> badgeCards2 = badgeCardRepository.findByUserIdOrderByBadgeTimestampDesc(userId);
 
 		// Badges depending on score
 		CheckGiveBadgeBasedOnScore(badgeCards2, Badge.BRONZE_MULTIPLICATOR, totalScore, 500, userId).ifPresent(badgeCards::add);
@@ -83,8 +86,16 @@ public class GameServiceImpl implements GameService {
 			BadgeCard firstWonBadge = giveBadgeToUser(Badge.FIRST_WON, userId);
 			badgeCards.add(firstWonBadge);
 		}
+		
+		// lucky number badge
+		MultiplicationResultAttempt multiplicationResultAttempt=multiplicationResultAttemptClient.retrieveMultiplicationResultAttemptById(attemptId);
+		if (!containsBadge(badgeCards2, Badge.LUCKY_NUMBER) && (LUCKY_NUMBER==multiplicationResultAttempt.getMultplicationFactorA()|| LUCKY_NUMBER==multiplicationResultAttempt.getMultiplicationFactorB())) {
+			
+			BadgeCard luckyNumberBadge= giveBadgeToUser(Badge.LUCKY_NUMBER, userId);
+			badgeCards.add(luckyNumberBadge);
+		}
 
-		return null;
+		return badgeCards;
 	}
 
 	/**
@@ -141,7 +152,7 @@ public class GameServiceImpl implements GameService {
 	public GameStats retrieveStatsForUser(Long userId) {
 		int score = scoreCardRepository.getTotalScoreForUser(userId);
 
-		List<BadgeCard> badgeCards = badgeCardRepository.findUserIdOrderByBagdgeTimestampDesc(userId);
+		List<BadgeCard> badgeCards = badgeCardRepository.findByUserIdOrderByBadgeTimestampDesc(userId);
 
 		return new GameStats(userId, score, badgeCards.stream().map(BadgeCard::getBadge).collect(Collectors.toList()));
 	}

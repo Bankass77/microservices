@@ -25,6 +25,7 @@ public final class BadgeCard implements Serializable {
 	@Column(name = "BADGE_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private final Long badgeId;
+	
 	private final Long userId;
 	private final long badgeTimestamp;
 	private final Badge badge;
