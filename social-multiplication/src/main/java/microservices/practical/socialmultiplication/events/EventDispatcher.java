@@ -18,8 +18,8 @@ public class EventDispatcher {
 	private String multiplicationRoutingKey;
 
 	@Autowired
-	public EventDispatcher(RabbitTemplate rabbitTemplate, @Value("${multiplication.exchange}") String multiplicationExchange,
-			@Value("${multiplication.solved.key}") String multiplicationRoutingKey) {
+	public EventDispatcher(RabbitTemplate rabbitTemplate, @Value("${multiplication.exchange}") final String multiplicationExchange,
+			@Value("${multiplication.solved.key}") final String multiplicationRoutingKey) {
 		super();
 		this.rabbitTemplate = rabbitTemplate;
 		this.multiplicationExchange = multiplicationExchange;
