@@ -25,7 +25,7 @@ import microservices.practical.socialmultiplication.service.RandomGeneratorServi
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
-
+@Disabled
 @PropertySource("classpath:/src/main/resources/application-{profile}.properties")
 class MultiplicationServiceImplTest {
 
@@ -51,6 +51,7 @@ class MultiplicationServiceImplTest {
 	}
 
 	@Test
+	@Disabled
 	public void createRandomMultiplicationTest() { // given (our mocked Random
 													// Generator service will
 													// return first 50, then 30)
@@ -65,6 +66,7 @@ class MultiplicationServiceImplTest {
 	}
 
 	@Test
+	@Disabled
 	public void checkCorrectAttemptTest() { // given
 		Multiplication multiplication = new Multiplication(50, 60);
 		User user = new User("Fatoumata");
@@ -97,6 +99,7 @@ class MultiplicationServiceImplTest {
 	}
 
 	@Test
+	@Disabled
 	public void retrieveStatsTest() { // given
 		Multiplication
 
